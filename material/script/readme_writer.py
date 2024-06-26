@@ -1,8 +1,6 @@
 import collections
 import glob
 import json
-import time
-import random
 import requests
 from requests.sessions import Session
 from schema.metadata import Metadata
@@ -14,7 +12,7 @@ BADGE_SUFFIX = '.svg?style=plastic&logo=leetcode" />\n'
 class ReadmeWriter:
   def __init__(self):
     self.session: Session = requests.Session()
-    json_data = json.loads(self.session.get("https://leetcode.com/api/problems/all", timeout=10).content.decode("utf-8"))
+    json_data = json.load(self.session.get("https://leetcode.com/api/problems/all", timeout=10).content.decode("utf-8"))
     self.metadata = Metadata.from_dict(json_data)
     self.stat_status_pairs = self.metadata.stat_status_pairs
     self.stat_status_pairs.sort(key=lambda x: x.stat.frontend_question_id)
