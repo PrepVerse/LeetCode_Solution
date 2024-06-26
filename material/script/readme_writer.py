@@ -14,51 +14,37 @@ BADGE_SUFFIX = '.svg?style=plastic&logo=leetcode" />\n'
 class ReadmeWriter:
   def __init__(self):
     self.session: Session = requests.Session()
-    # self.headers = {
-    #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-    #     "Accept-Language": "en-US,en;q=0.9",
-    #     "Accept-Encoding": "gzip, deflate, br",
-    #     "Referer": "https://leetcode.com",
-    #     "Connection": "keep-alive",
-    #     "Cache-Control": "no-cache",
-    #     "Pragma": "no-cache",
-    #     "Accept": "application/json"
-    # }
-    
-    # json_data = json.loads(self.session.get(
-    #     "https://leetcode.com/api/problems/all",
-    #     timeout=10,
-    # ).content.decode("utf-8"))
-    # self.metadata = Metadata.from_dict(json_data)
-    # self.stat_status_pairs = self.metadata.stat_status_pairs
-    # self.stat_status_pairs.sort(key=lambda x: x.stat.frontend_question_id)
-    # self.sols_path = "docs/solutions/"
-    
-    try:
-        response = self.session.get(
-            "https://leetcode.com/api/problems/all",
-            timeout=10,
-        )
-        # response.raise_for_status()  # Raise an error for bad status codes
-        print("Response content:", response.content.decode("utf-8")[:250])
-        json_data = response.json()  # Use the built-in JSON decoder
-        print("JSON Data:", json.dumps(json_data, indent=2))  # Pretty-print the JSON data
-        self.metadata = Metadata.from_dict(json_data)
-        self.stat_status_pairs = self.metadata.stat_status_pairs
-        self.stat_status_pairs.sort(key=lambda x: x.stat.frontend_question_id)
-    except requests.exceptions.RequestException as e:
-        print(f"Request failed: {e}")
-        self.metadata = None
-    except json.JSONDecodeError as e:
-        print(f"Failed to parse JSON: {e}")
-        self.metadata = None
-
+    json_data = json.loads(self.session.get("https://leetcode.com/api/problems/all", timeout=10).content.decode("utf-8"))
+    self.metadata = Metadata.from_dict(json_data)
+    self.stat_status_pairs = self.metadata.stat_status_pairs
+    self.stat_status_pairs.sort(key=lambda x: x.stat.frontend_question_id)
     self.sols_path = "docs/solutions/"
+    
+    # try:
+    #     response = self.session.get(
+    #         "https://leetcode.com/api/problems/all",
+    #         timeout=10,
+    #     )
+    #     # response.raise_for_status()  # Raise an error for bad status codes
+    #     print("Response content:", response.content.decode("utf-8")[:250])
+    #     json_data = response.json()  # Use the built-in JSON decoder
+    #     print("JSON Data:", json.dumps(json_data, indent=2))  # Pretty-print the JSON data
+    #     self.metadata = Metadata.from_dict(json_data)
+    #     self.stat_status_pairs = self.metadata.stat_status_pairs
+    #     self.stat_status_pairs.sort(key=lambda x: x.stat.frontend_question_id)
+    # except requests.exceptions.RequestException as e:
+    #     print(f"Request failed: {e}")
+    #     self.metadata = None
+    # except json.JSONDecodeError as e:
+    #     print(f"Failed to parse JSON: {e}")
+    #     self.metadata = None
+
+    # self.sols_path = "docs/solutions/"
 
   def write_readme(self) -> None:
-    if not self.metadata:
-        print("Metadata is not available.")
-        return
+    # if not self.metadata:
+    #     print("Metadata is not available.")
+    #     return
     num_total: int = self.metadata.num_total
     prob_count = collections.Counter()  # {int (level): int}
     ac_count = collections.Counter()  # {int (level): int}
