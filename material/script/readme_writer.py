@@ -19,7 +19,7 @@ class ReadmeWriter:
     # self.sols_path = "docs/solutions/"
     
     try:
-        response = self.session.get("https://leetcode.com/api/problems/all", timeout=10)
+        response = requests.get("https://leetcode.com/api/problems/all")
         # response.raise_for_status()  # Raise an error for bad status codes
         content = response.content.decode("utf-8")
         print("Response content:", response.text[:500])
