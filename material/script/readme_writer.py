@@ -21,10 +21,10 @@ class ReadmeWriter:
     try:
         response = self.session.get("https://leetcode.com/api/problems/all", timeout=10)
         # response.raise_for_status()  # Raise an error for bad status codes
-        content = self.session.get("https://leetcode.com/api/problems/all", timeout=10).content.decode("utf-8")
+        content = response.content.decode("utf-8")
         print("Response content:", content[:500])
         json_data = json.loads(content)  # Use the built-in JSON decoder
-        print("JSON Data:", json.dumps(json_data, indent=2))  # Pretty-print the JSON data
+        print("JSON Data:", json_data)  # Pretty-print the JSON data
         self.metadata = Metadata.from_dict(json_data)
         self.stat_status_pairs = self.metadata.stat_status_pairs
         self.stat_status_pairs.sort(key=lambda x: x.stat.frontend_question_id)
