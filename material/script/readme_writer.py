@@ -19,9 +19,9 @@ class ReadmeWriter:
     # self.sols_path = "docs/solutions/"
     
     try:
-        response = self.session.get("https://leetcode.com/api/problems/all", timeout=10).content.decode("utf-8")
+        response = self.session.get("https://leetcode.com/api/problems/all", timeout=10)
         # response.raise_for_status()  # Raise an error for bad status codes
-        print("Response content:", response[:250])
+        print("Response content:", response.content.decode("utf-8")[:500])
         json_data = response.json()  # Use the built-in JSON decoder
         print("JSON Data:", json.dumps(json_data, indent=2))  # Pretty-print the JSON data
         self.metadata = Metadata.from_dict(json_data)
